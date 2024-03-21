@@ -5,18 +5,21 @@ import { cancel } from "../redux/orderSlice";
 import calculateTime from "../helper/calculateTime";
 
 function MainTable({ orders, orderDelivered }) {
+  // Redux
+  const dispatch = useDispatch();
+  // Current Time
   const date = new Date();
   let time = date.getTime();
   const [currentTime, setTime] = useState(time);
-  const dispatch = useDispatch();
-
+  // useEffect
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTime(Date.now());
-    }, 1000); 
+    }, 1000);
 
-    return () => clearInterval(intervalId); 
+    return () => clearInterval(intervalId);
   }, []);
+  //
   return (
     <table className="mt-1">
       <tr>
@@ -27,19 +30,22 @@ function MainTable({ orders, orderDelivered }) {
       </tr>
 
       {orders.map((item, i) => {
-        const {minutes,seconds}= calculateTime(currentTime,item?.timestamp)
+        const { minutes, seconds } = calculateTime(
+          currentTime,
+          item?.timestamp
+        );
         return (
           <tr key={i}>
             <td>{item.order}</td>
             <td>{orderStage[item.stages]}</td>
             <td>{`${minutes} min. ${seconds} sec.`}</td>
             {item.stages < 2 && (
-             <td>
-             <button
-                onClick={() => dispatch(cancel({ orderId: item?.order }))}
-              >
-                Cancel
-              </button>
+              <td>
+                <button
+                  onClick={() => dispatch(cancel({ orderId: item?.order }))}
+                >
+                  Cancel
+                </button>
               </td>
             )}
           </tr>

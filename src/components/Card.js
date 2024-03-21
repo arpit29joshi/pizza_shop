@@ -5,18 +5,22 @@ import { nextStage } from "../redux/orderSlice";
 import calculateTime from "../helper/calculateTime";
 
 function Card({ orders, stage }) {
+  // Redux
   const orderArray = orders.filter((item) => item.stages === stage);
+  const dispatch = useDispatch();
+  // Current Time
   const date = new Date();
   let time = date.getTime();
+  // useState
   const [currentTime, setTime] = useState(time);
-  const dispatch = useDispatch();
+  // useEffect
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTime(Date.now());
     }, 1000);
-
     return () => clearInterval(intervalId);
   }, []);
+  //
   return (
     <div className="card-body ">
       <h4 className="text-center">{orderStage[stage]}</h4>

@@ -1,26 +1,26 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { placingOrderData } from "../constants";
+import { maxOrderLimit, placingOrderData } from "../constants";
 import { addNewOrder } from "../redux/orderSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 function PlacingOrder() {
+  // Redux States
   const { maxOrder } = useSelector((state) => state.order);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   //
-  //
+  //useState 
   const [data, setData] = useState({
     type: placingOrderData.types[0],
     size: placingOrderData.size[0],
     base: placingOrderData.base[0],
   });
-  //
-  //
+  const [disable,setDisable]=useState(false)
   const { type, size, base } = data;
   //
-  //
+  //update fn. for use state
   function updateState(e) {
     setData((prv) => ({ ...prv, [e.target.id]: e.target.value }));
   }
@@ -60,16 +60,17 @@ function PlacingOrder() {
           })}
         </select>
       </form>
-      {maxOrder < 10 ? (
+      {maxOrder < maxOrderLimit ? (
         <button
-        
+          disabled={disable}
           className="size-22 mt-1 "
           onClick={() => {
+            setDisable(true)
             dispatch(addNewOrder(data));
             toast.success("Order Added Successfully");
             setTimeout(()=>{
               navigate("/")
-            },500)
+            },1000)
           }}
         >
           Submit

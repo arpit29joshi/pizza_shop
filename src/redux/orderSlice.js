@@ -26,7 +26,7 @@ export const orderSlice = createSlice({
       state.maxOrder += 1;
     },
     nextStage: (state, action) => {
-      const newArr = state.orders.map((item, i) => {
+      const newOrderArr = state.orders.map((item, i) => {
         const date = new Date();
         let time = date.getTime();
         return item.order === action?.payload?.orderId
@@ -37,18 +37,18 @@ export const orderSlice = createSlice({
             }
           : item;
       });
-      state.orders = newArr;
+      state.orders = newOrderArr;
       if(action?.payload?.currentStage===2){
         state.orderDelivered +=1
         state.maxOrder -=1
       }
     },
     cancel: (state, action) => {
-      const newArr = state.orders.filter((item) => {
+      const newOrderArr = state.orders.filter((item) => {
         return item.order !== action?.payload?.orderId
          
       });
-      state.orders = newArr;
+      state.orders = newOrderArr;
       state.maxOrder -=1
     },
   },

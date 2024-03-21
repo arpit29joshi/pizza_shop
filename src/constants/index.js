@@ -16,4 +16,6 @@ const tiemAccToSize = {
   Large: 5,
 };
 
-export { placingOrderData, orderStage,tiemAccToSize };
+const maxOrderLimit=10
+
+export { placingOrderData, orderStage,tiemAccToSize,maxOrderLimit };
